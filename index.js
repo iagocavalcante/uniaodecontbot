@@ -18,7 +18,7 @@ app.get('/', function(req, res) {
 
 // for Facebook verification
 app.get('/webhook/', function(req, res) {
-    if (req.query['hub.verify_token'] === 'EAAab3X0BGocBAC59pRhTpE1qXJWExYYYveHUwohZAH7bpNGMTANkkL0CcZC4fyIJZAMsBMzuwktWeMRR1eJ6xdsIUDbHscw2nXRTYPNnMRkyA4QrQDjnjV24w8RzG0d9MegwsiGM9j0fYdQnj6k4DkgwCXgkdwSVfQjPAdh2QZDZD') {
+    if (req.query['hub.verify_token'] === 'EAARnZCjoA6J4BAJu4dabKK2M2ZBh1YJGAMRkSCfd9JLDZBtKa5CbmDzdjmRACm4m71VqJAzmyIn8fJZA3LeGCfON3asigZCvBJqql8OtDy6e6rmqLgMe8ENEMGIXC0HAyjwbZBrx581Om5d3R7queNCSdQxYti5lWM5Epyz4AugQZDZD') {
         res.send(req.query['hub.challenge'])
     }
     res.send('Error, wrong token')
@@ -43,7 +43,7 @@ app.post('/webhook/', function(req, res) {
                 sendGenericMessage(sender)
                 continue
             }
-            sendTextMessage(sender, "parrot: " + text.substring(0, 200))
+            sendTextMessage(sender, "Bot: " + text.substring(0, 200))
         }
         if (event.postback) {
             text = JSON.stringify(event.postback)
@@ -54,7 +54,7 @@ app.post('/webhook/', function(req, res) {
     res.sendStatus(200)
 })
 
-var token = "EAAab3X0BGocBAC59pRhTpE1qXJWExYYYveHUwohZAH7bpNGMTANkkL0CcZC4fyIJZAMsBMzuwktWeMRR1eJ6xdsIUDbHscw2nXRTYPNnMRkyA4QrQDjnjV24w8RzG0d9MegwsiGM9j0fYdQnj6k4DkgwCXgkdwSVfQjPAdh2QZDZD"
+var token = "EAARnZCjoA6J4BAJu4dabKK2M2ZBh1YJGAMRkSCfd9JLDZBtKa5CbmDzdjmRACm4m71VqJAzmyIn8fJZA3LeGCfON3asigZCvBJqql8OtDy6e6rmqLgMe8ENEMGIXC0HAyjwbZBrx581Om5d3R7queNCSdQxYti5lWM5Epyz4AugQZDZD"
 
 // function to echo back messages - added by Stefan
 
