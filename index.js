@@ -96,12 +96,7 @@ function sendGenericMessage(sender) {
         // "greeting": {
         //     "text": "Olá {{user_first_name}}, bem-vindo ao chat do União Decont."
         // }
-        "recipient": {
-            "id": sender
-        },
-        "message": {
-            "text": "Olá, bem-vindo ao chat do União Decont."
-        }
+        "text": "Olá, bem-vindo ao chat do União Decont."
 
 
         // "attachment": {
