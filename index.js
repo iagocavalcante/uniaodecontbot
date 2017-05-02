@@ -6,7 +6,9 @@ var app = express()
 app.set('port', (process.env.PORT || 5000))
 
 // Process application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.urlencoded({
+    extended: false
+}))
 
 // Process application/json
 app.use(bodyParser.json())
@@ -65,10 +67,14 @@ function sendTextMessage(sender, text) {
     }
     request({
         url: 'https://graph.facebook.com/v2.6/me/messages',
-        qs: { access_token: token },
+        qs: {
+            access_token: token
+        },
         method: 'POST',
         json: {
-            recipient: { id: sender },
+            recipient: {
+                id: sender
+            },
             message: messageData,
         }
     }, function(error, response, body) {
@@ -84,10 +90,17 @@ function sendTextMessage(sender, text) {
 // Send an test message back as two cards.
 
 function sendGenericMessage(sender) {
+    console.log(sender)
     messageData = {
-        "setting_type": "greeting",
-        "greeting": {
-            "text": "Olá {{user_first_name}}, bem-vindo ao chat do União Decont."
+        // "setting_type": "greeting",
+        // "greeting": {
+        //     "text": "Olá {{user_first_name}}, bem-vindo ao chat do União Decont."
+        // }
+        "recipient": {
+            "id": sender
+        },
+        "message": {
+            "text": "Olá, bem-vindo ao chat do União Decont."
         }
 
 
@@ -151,10 +164,14 @@ function sendGenericMessage(sender) {
     }
     request({
         url: 'https://graph.facebook.com/v2.6/me/messages',
-        qs: { access_token: token },
+        qs: {
+            access_token: token
+        },
         method: 'POST',
         json: {
-            recipient: { id: sender },
+            recipient: {
+                id: sender
+            },
             message: messageData,
         }
     }, function(error, response, body) {
