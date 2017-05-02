@@ -18,7 +18,7 @@ app.get('/', function(req, res) {
 
 // for Facebook verification
 app.get('/webhook/', function(req, res) {
-    if (req.query['hub.verify_token'] === 'Aha_Moment_Labs') {
+    if (req.query['hub.verify_token'] === 'EAAab3X0BGocBAC59pRhTpE1qXJWExYYYveHUwohZAH7bpNGMTANkkL0CcZC4fyIJZAMsBMzuwktWeMRR1eJ6xdsIUDbHscw2nXRTYPNnMRkyA4QrQDjnjV24w8RzG0d9MegwsiGM9j0fYdQnj6k4DkgwCXgkdwSVfQjPAdh2QZDZD') {
         res.send(req.query['hub.challenge'])
     }
     res.send('Error, wrong token')
