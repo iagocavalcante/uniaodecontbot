@@ -18,7 +18,7 @@ app.get('/', function(req, res) {
 
 // for Facebook verification
 app.get('/webhook/', function(req, res) {
-    if (req.query['hub.verify_token'] === 'EAAab3X0BGocBABD7xbKpawfa1EcdBqDZA9PYQNNZCCpJHBZBaeHNuDM4ZAga5zGt9Bme2rs5WoW5ZBvOdTtUu4D1LvCZA14YylEojZCk6tkgjVWFQikHkcrlwI4XXqwq8jaItbO6SqfJo0mYXpZCfkMfUIQITtZCx9U1ctVGMiimoXwZDZD') {
+    if (req.query['hub.verify_token'] === 'Aha_Moment_Labs') {
         res.send(req.query['hub.challenge'])
     }
     res.send('Error, wrong token')
@@ -54,7 +54,7 @@ app.post('/webhook/', function(req, res) {
     res.sendStatus(200)
 })
 
-var token = "EAAab3X0BGocBABD7xbKpawfa1EcdBqDZA9PYQNNZCCpJHBZBaeHNuDM4ZAga5zGt9Bme2rs5WoW5ZBvOdTtUu4D1LvCZA14YylEojZCk6tkgjVWFQikHkcrlwI4XXqwq8jaItbO6SqfJo0mYXpZCfkMfUIQITtZCx9U1ctVGMiimoXwZDZD"
+var token = "EAAab3X0BGocBAC59pRhTpE1qXJWExYYYveHUwohZAH7bpNGMTANkkL0CcZC4fyIJZAMsBMzuwktWeMRR1eJ6xdsIUDbHscw2nXRTYPNnMRkyA4QrQDjnjV24w8RzG0d9MegwsiGM9j0fYdQnj6k4DkgwCXgkdwSVfQjPAdh2QZDZD"
 
 // function to echo back messages - added by Stefan
 
