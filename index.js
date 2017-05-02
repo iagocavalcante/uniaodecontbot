@@ -45,6 +45,8 @@ app.post('/webhook/', function(req, res) {
             if (text === 'oi') {
                 sendGenericMessage(sender)
                 continue
+            } else if (text == 'contato') {
+                sendTextMessage(sender, "Para marcar um jogo, mande um whatsapp para 981715232")
             }
             sendTextMessage(sender, "Bem-vindo ao chat do União Decont.")
         }
