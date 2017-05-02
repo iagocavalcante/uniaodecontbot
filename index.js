@@ -52,7 +52,7 @@ app.post('/webhook/', function(req, res) {
             } else if (text == 'karla') {
                 sendTextMessage(sender, "Karla é meu amor <3")
             } else {
-                sendTextMessage(sender, "Bem-vindo ao chat do União Decont.")
+                sendTextMessage(sender, "Bot diz:" + text.substring(0, 200))
             }
         }
         if (event.postback) {
