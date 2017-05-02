@@ -46,7 +46,7 @@ app.post('/webhook/', function(req, res) {
                 sendGenericMessage(sender)
                 continue
             }
-            sendTextMessage(sender, "Bot: " + text.substring(0, 200))
+            sendTextMessage(sender, "Bem-vindo ao chat do União Decont.")
         }
         if (event.postback) {
             text = JSON.stringify(event.postback)
