@@ -47,6 +47,10 @@ app.post('/webhook/', function(req, res) {
                 continue
             } else if (text == 'contato') {
                 sendTextMessage(sender, "Para marcar um jogo, mande um whatsapp para 981715232")
+            } else if (text == 'patrick') {
+                sendTextMessage(sender, "Patrick é gayzao")
+            } else if (text == 'karla') {
+                sendTextMessage(sender, "Karla é meu amor <3")
             } else {
                 sendTextMessage(sender, "Bem-vindo ao chat do União Decont.")
             }
