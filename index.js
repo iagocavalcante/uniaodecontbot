@@ -28,11 +28,6 @@ app.listen(app.get('port'), () => {
     console.log('running on port', app.get('port'))
 })
 
-
 // API End Point - added by Stefan
 
 app.post('/webhook/', processMessage)
-
-
-
-
