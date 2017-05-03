@@ -1,7 +1,9 @@
-var express = require('express')
-var bodyParser = require('body-parser')
-var request = require('request')
-var app = express()
+const express = require('express')
+const bodyParser = require('body-parser')
+const request = require('request')
+const app = express()
+const verification = require('./controllers/verification')
+const processMessage = require('./controllers/processMessage')
 
 app.set('port', (process.env.PORT || 5000))
 
@@ -19,12 +21,7 @@ app.get('/', function(req, res) {
 })
 
 // for Facebook verification
-app.get('/webhook/', function(req, res) {
-    if (req.query['hub.verify_token'] === 'EAARnZCjoA6J4BAJu4dabKK2M2ZBh1YJGAMRkSCfd9JLDZBtKa5CbmDzdjmRACm4m71VqJAzmyIn8fJZA3LeGCfON3asigZCvBJqql8OtDy6e6rmqLgMe8ENEMGIXC0HAyjwbZBrx581Om5d3R7queNCSdQxYti5lWM5Epyz4AugQZDZD') {
-        res.send(req.query['hub.challenge'])
-    }
-    res.send('Error, wrong token')
-})
+app.get('/webhook/', verification)
 
 // Spin up the server
 app.listen(app.get('port'), function() {
@@ -34,153 +31,8 @@ app.listen(app.get('port'), function() {
 
 // API End Point - added by Stefan
 
-app.post('/webhook/', function(req, res) {
-    messaging_events = req.body.entry[0].messaging
-    console.log(messaging_events)
-    for (i = 0; i < messaging_events.length; i++) {
-        event = req.body.entry[0].messaging[i]
-        sender = event.sender.id
-        if (event.message && event.message.text) {
-            text = event.message.text
-            if (text === 'oi') {
-                sendGenericMessage(sender)
-                continue
-            } else if (text == 'contato') {
-                sendTextMessage(sender, "Para marcar um jogo, mande um whatsapp para 981715232")
-            } else if (text == 'patrick') {
-                sendTextMessage(sender, "Patrick é gayzao")
-            } else if (text == 'karla') {
-                sendTextMessage(sender, "Karla é meu amor <3")
-            } else {
-                sendTextMessage(sender, "Bot diz:" + text.substring(0, 200))
-            }
-        }
-        if (event.postback) {
-            text = JSON.stringify(event.postback)
-            sendTextMessage(sender, "Postback received: " + text.substring(0, 200), token)
-            continue
-        }
-    }
-    res.sendStatus(200)
-})
-
-var token = "EAARnZCjoA6J4BAJu4dabKK2M2ZBh1YJGAMRkSCfd9JLDZBtKa5CbmDzdjmRACm4m71VqJAzmyIn8fJZA3LeGCfON3asigZCvBJqql8OtDy6e6rmqLgMe8ENEMGIXC0HAyjwbZBrx581Om5d3R7queNCSdQxYti5lWM5Epyz4AugQZDZD"
-
-// function to echo back messages - added by Stefan
-
-function sendTextMessage(sender, text) {
-    messageData = {
-        text: text
-    }
-    request({
-        url: 'https://graph.facebook.com/v2.6/me/messages',
-        qs: {
-            access_token: token
-        },
-        method: 'POST',
-        json: {
-            recipient: {
-                id: sender
-            },
-            message: messageData,
-        }
-    }, function(error, response, body) {
-        if (error) {
-            console.log('Error sending messages: ', error)
-        } else if (response.body.error) {
-            console.log('Error: ', response.body.error)
-        }
-    })
-}
+app.post('/webhook/', processMessage)
 
 
-// Send an test message back as two cards.
-
-function sendGenericMessage(sender) {
-    console.log(sender)
-    messageData = {
-        // "setting_type": "greeting",
-        // "greeting": {
-        //     "text": "Olá {{user_first_name}}, bem-vindo ao chat do União Decont."
-        // }
-        "text": "Olá, bem-vindo ao chat do União Decont."
 
 
-        // "attachment": {
-        //     "type": "template",
-        //     "payload": {
-        //         "template_type": "generic",
-        //         "elements": [{
-        //             "title": "Ai Chat Bot Communities",
-        //             "subtitle": "Communities to Follow",
-        //             "image_url": "http://1u88jj3r4db2x4txp44yqfj1.wpengine.netdna-cdn.com/...",
-        //             "buttons": [{
-        //                 "type": "web_url",
-        //                 "url": "https://www.facebook.com/groups/aic...",
-        //                 "title": "FB Chatbot Group"
-        //             }, {
-        //                 "type": "web_url",
-        //                 "url": "https://www.reddit.com/r/Chat_Bots/",
-        //                 "title": "Chatbots on Reddit"
-        //             }, {
-        //                 "type": "web_url",
-        //                 "url": "https://twitter.com/aichatbots",
-        //                 "title": "Chatbots on Twitter"
-        //             }],
-        //         }, {
-        //             "title": "Chatbots FAQ",
-        //             "subtitle": "Aking the Deep Questions",
-        //             "image_url": "https://tctechcrunch2011.files.wordpress.com/...",
-        //             "buttons": [{
-        //                 "type": "postback",
-        //                 "title": "What's the benefit?",
-        //                 "payload": "Chatbots make content interactive instead of static",
-        //             }, {
-        //                 "type": "postback",
-        //                 "title": "What can Chatbots do",
-        //                 "payload": "One day Chatbots will control the Internet of Things! You will be able to control your homes temperature with a text",
-        //             }, {
-        //                 "type": "postback",
-        //                 "title": "The Future",
-        //                 "payload": "Chatbots are fun! One day your BFF might be a Chatbot",
-        //             }],
-        //         }, {
-        //             "title": "Learning More",
-        //             "subtitle": "Aking the Deep Questions",
-        //             "image_url": "http://www.brandknewmag.com/wp-cont...",
-        //             "buttons": [{
-        //                 "type": "postback",
-        //                 "title": "AIML",
-        //                 "payload": "Checkout Artificial Intelligence Mark Up Language. Its easier than you think!",
-        //             }, {
-        //                 "type": "postback",
-        //                 "title": "Machine Learning",
-        //                 "payload": "Use python to teach your maching in 16D space in 15min",
-        //             }, {
-        //                 "type": "postback",
-        //                 "title": "Communities",
-        //                 "payload": "Online communities & Meetups are the best way to stay ahead of the curve!",
-        //             }],
-        //         }]
-        //     }
-    }
-    request({
-        url: 'https://graph.facebook.com/v2.6/me/messages',
-        qs: {
-            access_token: token
-        },
-        method: 'POST',
-        json: {
-            recipient: {
-                id: sender
-            },
-            message: messageData,
-        }
-    }, function(error, response, body) {
-        if (error) {
-            console.log('Error sending messages: ', error)
-        } else if (response.body.error) {
-            console.log('Error: ', response.body.error)
-        }
-    })
-}
