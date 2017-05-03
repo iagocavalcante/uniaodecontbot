@@ -5,16 +5,15 @@ const request = require('request');
 
 module.exports = (event) => {
     const senderId = event.sender.id;
-    const messageDatas = event.message.text;
+    const messageData = event.message.text;
     
     request({
         url: 'https://graph.facebook.com/v2.6/me/messages',
         qs: { access_token: FACEBOOK_ACCESS_TOKEN },
         method: 'POST',
         json: {
-            recipient: { id: senderId },
             recipient: {
-                id: sender
+                id: senderId
             },
             message: messageData,
         }

@@ -5,10 +5,10 @@ const request = require('request');
 
 module.exports = (event) => {
     const senderId = event.sender.id;
-    const messageData = event.message.text;
+    // const messageData = event.message.text;
     
-    console.log(senderId)
-    messageData = {
+    // console.log(senderId)
+    const messageData = {
         // "setting_type": "greeting",
         // "greeting": {
         //     "text": "Olá {{user_first_name}}, bem-vindo ao chat do União Decont."
