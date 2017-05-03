@@ -14,7 +14,6 @@ module.exports = (req, res) => {
                     text = event.message.text
                     if (text === 'oi') {
                         messageGeneric(sender)
-                        continue
                     } else if (text == 'contato') {
                         messageHook(sender, "Para marcar um jogo, mande um whatsapp para 981715232")
                     } else if (text == 'patrick') {
