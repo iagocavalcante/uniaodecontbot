@@ -16,7 +16,7 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json())
 
 // Index route
-app.get('/', function(req, res) {
+app.get('/', (req, res) => {
     res.send("Hey Boy, how are you")
 })
 
@@ -24,7 +24,7 @@ app.get('/', function(req, res) {
 app.get('/webhook/', verification)
 
 // Spin up the server
-app.listen(app.get('port'), function() {
+app.listen(app.get('port'), () => {
     console.log('running on port', app.get('port'))
 })
 
