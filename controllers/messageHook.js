@@ -1,11 +1,8 @@
-// const FACEBOOK_ACCESS_TOKEN = 'EAARnZCjoA6J4BAJu4dabKK2M2ZBh1YJGAMRkSCfd9JLDZBtKa5CbmDzdjmRACm4m71VqJAzmyIn8fJZA3LeGCfON3asigZCvBJqql8OtDy6e6rmqLgMe8ENEMGIXC0HAyjwbZBrx581Om5d3R7queNCSdQxYti5lWM5Epyz4AugQZDZD';
+const request = require('request')
 
-
-const request = require('request');
-
-module.exports = (event, FACEBOOK_ACCESS_TOKEN) => {
-    const senderId = event.sender.id;
-    const messageData = event.message.text;
+module.exports = (event, FACEBOOK_ACCESS_TOKEN, text) => {
+    const senderId = event.sender.id
+    const messageData = { "text": text}
     
     request({
         url: 'https://graph.facebook.com/v2.6/me/messages',
