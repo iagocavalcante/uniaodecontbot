@@ -26,8 +26,7 @@ module.exports = (req, res) => {
                 }
                 if (event.postback) {
                     text = JSON.stringify(event.postback)
-                    messageHook(FACEBOOK_ACCESS_TOKEN, "Postback received: " + text.substring(0, 200), token)
-                    continue
+                    messageHook(FACEBOOK_ACCESS_TOKEN, "Postback received: " + text.substring(0, 200))
                 }
             })
         })
