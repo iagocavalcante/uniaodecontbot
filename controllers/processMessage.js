@@ -18,10 +18,12 @@ module.exports = (req, res) => {
                         messageHook(event, FACEBOOK_ACCESS_TOKEN, "Para marcar um jogo, mande um whatsapp para 981715232")
                     } else if (text === 'patrick') {
                         messageHook(event, FACEBOOK_ACCESS_TOKEN, "Patrick é gayzao")
-                    } else if (text ==='karla') {
+                    } else if (text === 'karla') {
                         messageHook(event, FACEBOOK_ACCESS_TOKEN, "Karla é meu amor <3")
-                    } else if (text ==='gustavo') {
+                    } else if (text === 'gustavo') {
                         messageHook(event, FACEBOOK_ACCESS_TOKEN, "Melhor goleiro de belém!")
+                    } else if (text === 'bulão') {
+                        messageHook(event, FACEBOOK_ACCESS_TOKEN, "Craque, joga 10!")
                     } else {
                         messageHook(event, FACEBOOK_ACCESS_TOKEN, "Bot diz:" + text.substring(0, 200))
                     }
