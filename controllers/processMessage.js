@@ -34,33 +34,3 @@ module.exports = (req, res) => {
         res.status(200).end()
     }
 }
-
-// module.exports = (event) => {
-//     messaging_events = request.body.entry[0].messaging
-//     console.log(messaging_events)
-//     for (i = 0; i < messaging_events.length; i++) {
-//         event = request.body.entry[0].messaging[i]
-
-//         if (event.message && event.message.text) {
-//             text = event.message.text
-//             if (text === 'oi') {
-//                 messageGeneric(sender)
-//                 continue
-//             } else if (text == 'contato') {
-//                 messageHook(sender, "Para marcar um jogo, mande um whatsapp para 981715232")
-//             } else if (text == 'patrick') {
-//                 messageHook(sender, "Patrick é gayzao")
-//             } else if (text == 'karla') {
-//                 messageHook(sender, "Karla é meu amor <3")
-//             } else {
-//                 messageHook(sender, "Bot diz:" + text.substring(0, 200))
-//             }
-//         }
-//         if (event.postback) {
-//             text = JSON.stringify(event.postback)
-//             messageHook(sender, "Postback received: " + text.substring(0, 200), token)
-//             continue
-//         }
-//     }
-//     res.sendStatus(200)
-// }
