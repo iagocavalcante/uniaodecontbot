@@ -13,20 +13,20 @@ module.exports = (req, res) => {
                 if (event.message && event.message.text) {
                     text = event.message.text
                     if (text === 'oi') {
-                        messageGeneric(FACEBOOK_ACCESS_TOKEN)
+                        messageGeneric(event, FACEBOOK_ACCESS_TOKEN)
                     } else if (text == 'contato') {
-                        messageHook(FACEBOOK_ACCESS_TOKEN, "Para marcar um jogo, mande um whatsapp para 981715232")
+                        messageHook(event, FACEBOOK_ACCESS_TOKEN, "Para marcar um jogo, mande um whatsapp para 981715232")
                     } else if (text == 'patrick') {
-                        messageHook(FACEBOOK_ACCESS_TOKEN, "Patrick é gayzao")
+                        messageHook(event, FACEBOOK_ACCESS_TOKEN, "Patrick é gayzao")
                     } else if (text == 'karla') {
-                        messageHook(FACEBOOK_ACCESS_TOKEN, "Karla é meu amor <3")
+                        messageHook(event, FACEBOOK_ACCESS_TOKEN, "Karla é meu amor <3")
                     } else {
-                        messageHook(FACEBOOK_ACCESS_TOKEN, "Bot diz:" + text.substring(0, 200))
+                        messageHook(event, FACEBOOK_ACCESS_TOKEN, "Bot diz:" + text.substring(0, 200))
                     }
                 }
                 if (event.postback) {
                     text = JSON.stringify(event.postback)
-                    messageHook(FACEBOOK_ACCESS_TOKEN, "Postback received: " + text.substring(0, 200))
+                    messageHook(event, FACEBOOK_ACCESS_TOKEN, "Postback received: " + text.substring(0, 200))
                 }
             })
         })
