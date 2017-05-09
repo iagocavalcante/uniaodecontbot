@@ -24,6 +24,8 @@ module.exports = (req, res) => {
                         messageHook(event, FACEBOOK_ACCESS_TOKEN, "Melhor goleiro de belém!")
                     } else if (text === 'bulão') {
                         messageHook(event, FACEBOOK_ACCESS_TOKEN, "Craque, joga 10!")
+                    } else if (text === 'Ronnes') {
+                        messageHook(event, FACEBOOK_ACCESS_TOKEN, "Entre na página https://www.facebook.com/reativafisioterapiaespecializada/")
                     } else {
                         messageHook(event, FACEBOOK_ACCESS_TOKEN, "Bot diz:" + text.substring(0, 200))
                     }
