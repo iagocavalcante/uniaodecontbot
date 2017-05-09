@@ -4,9 +4,9 @@ const FACEBOOK_ACCESS_TOKEN = 'EAARnZCjoA6J4BAJu4dabKK2M2ZBh1YJGAMRkSCfd9JLDZBtK
 const request = require('request')
 const messageHook = require('./messageHook')
 const messageGeneric = require('./messageGeneric')
-const ini = require('./inicializador')
+const Inicializador = require('./inicializador')
 
-ini = new Inicializador()
+let ini = new Inicializador()
 
 module.exports = (req, res) => {
     if (req.body.object === 'page') {
