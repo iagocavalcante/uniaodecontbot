@@ -41,11 +41,9 @@ app.listen(app.get('port'), () => {
 })
 
 // API End Point - added by Stefan
-app.get('/setup', (req, res) => {
-    getStart.register
-    getStart.setupGetStartedButton
-    getStart.setupPersistentMenu
-    getStart.setupGreetingText
-})
+app.get('/setup', getStart.register,
+    getStart.setupGetStartedButton,
+    getStart.setupPersistentMenu,
+    getStart.setupGreetingText)
 
 app.post('/webhook/', processMessage)
