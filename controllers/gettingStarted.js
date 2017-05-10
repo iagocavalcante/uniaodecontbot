@@ -3,7 +3,7 @@
 const request = require('request')
 const FACEBOOK_ACCESS_TOKEN = 'EAARnZCjoA6J4BAJu4dabKK2M2ZBh1YJGAMRkSCfd9JLDZBtKa5CbmDzdjmRACm4m71VqJAzmyIn8fJZA3LeGCfON3asigZCvBJqql8OtDy6e6rmqLgMe8ENEMGIXC0HAyjwbZBrx581Om5d3R7queNCSdQxYti5lWM5Epyz4AugQZDZD';
 
-function register(res) {
+function register(req, res) {
     let messageData = {
         "get_started": [{
             "payload": "USER_DEFINED_PAYLOAD"
@@ -31,7 +31,7 @@ function register(res) {
         })
 }
 
-function setupGreetingText(res) {
+function setupGreetingText(req, res) {
     let messageData = {
         "greeting": [{
             "locale": "default",
@@ -62,7 +62,7 @@ function setupGreetingText(res) {
 
 }
 
-function setupPersistentMenu(res) {
+function setupPersistentMenu(req, res) {
     let messageData = {
         "persistent_menu": [{
                 "locale": "default",
@@ -119,7 +119,7 @@ function setupPersistentMenu(res) {
 }
 
 
-function setupGetStartedButton(res) {
+function setupGetStartedButton(req, res) {
     let messageData = {
         "get_started": {
             "payload": "getstarted"
