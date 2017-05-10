@@ -4,7 +4,7 @@ const request = require('request')
 const app = express()
 const verification = require('./controllers/verification')
 const processMessage = require('./controllers/processMessage')
-const getStarted = require('./controllers/gettingStarted')
+const getStart = require('./controllers/gettingStarted')
 var mongoose = require('mongoose')
 
 // const MONGO_HOST = (process.env.MONGO_HOST || 'heroku_bt4c199d:a1s2d3f4A!@ds133388.mlab.com:33388');
@@ -42,10 +42,10 @@ app.listen(app.get('port'), () => {
 
 // API End Point - added by Stefan
 app.get('/setup', (req, res) => {
-    getStarted.register(res);
-    getStarted.setupGetStartedButton(res);
-    getStarted.setupPersistentMenu(res);
-    getStarted.setupGreetingText(res);
+    getStart.register
+    getStart.setupGetStartedButton
+    getStart.setupPersistentMenu
+    getStart.setupGreetingText
 })
 
 app.post('/webhook/', processMessage)
