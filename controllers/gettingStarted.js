@@ -147,8 +147,8 @@ function setupGetStartedButton(res) {
 }
 
 module.exports = {
-    setupGetStartedButton,
-    register,
-    setupGreetingText,
-    setupPersistentMenu
+    setupGetStartedButton: setupGetStartedButton,
+    register: register,
+    setupGreetingText: setupGreetingText,
+    setupPersistentMenu: setupPersistentMenu
 }
