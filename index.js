@@ -5,7 +5,7 @@ const app = express()
 const verification = require('./controllers/verification')
 const processMessage = require('./controllers/processMessage')
 const getStarted = require('./controllers/gettingStarted')
-let mongoose = require('mongoose')
+const mongoose = require('mongoose')
 
 const MONGO_HOST = (process.env.MONGO_HOST || 'heroku_bt4c199d:a1s2d3f4A!@ds133388.mlab.com:33388');
 app.set('mongo_url', (process.env.MONGODB_URL || 'mongodb://' + MONGO_HOST + '/heroku_bt4c199d'));
