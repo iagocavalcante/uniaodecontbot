@@ -34,6 +34,9 @@ module.exports = (req, res) => {
                 }
                 if (event.postback && event.postback.payload === USER_DEFINED_PAYLOAD) {
                     text = JSON.stringify(event.postback)
+                        //present user with some greeting or call to action
+                    let msg = "Hi ,I'm a Bot ,and I was created to help you easily .... "
+                        //sendMessage(event.sender.id,msg);
                     messageHook(event, FACEBOOK_ACCESS_TOKEN, "Postback received: " + text.substring(0, 200))
                 }
             })
