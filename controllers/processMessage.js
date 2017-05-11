@@ -39,7 +39,7 @@ module.exports = (req, res) => {
                     console.log("ENtroi aqu i");
                     text = JSON.stringify(event.postback);
 
-                    if (text === 'Get evento_comecar')
+                    if (text === 'evento_comecar')
                     //sendMessage(event.sender.id,msg);
                         messageHook(event, FACEBOOK_ACCESS_TOKEN, "Postback received: " + text.substring(0, 200))
                 }
