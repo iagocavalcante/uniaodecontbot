@@ -35,7 +35,7 @@ module.exports = (req, res) => {
                     }
                 }
 
-                if (event.postback && event.postback === 'evento_comecar') {
+                if (event.postback) {
                     console.log("ENtroi aqu i");
                     text = JSON.stringify(event.postback);
 
