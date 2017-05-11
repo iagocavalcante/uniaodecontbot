@@ -34,8 +34,8 @@ module.exports = (req, res) => {
                         messageHook(event, FACEBOOK_ACCESS_TOKEN, "Bot diz:" + text.substring(0, 200))
                     }
                 }
-                console.log('LOG DO POSTBACK => ', event.postback)
-                if (event.postback && event.postback.payload === 'evento_comecar') {
+
+                if (event.postback && event.postback === 'evento_comecar') {
                     text = JSON.stringify(event.postback);
 
                     if (text === 'Get Started')
