@@ -35,7 +35,7 @@ module.exports = (req, res) => {
                     }
                 }
                 if (event.postback && event.postback.payload === 'evento_comecar') {
-                    text = JSON.stringify(event.postback)
+                    text = JSON.stringify(event.postback);
 
                     if (text === 'Get Started')
                     //sendMessage(event.sender.id,msg);
