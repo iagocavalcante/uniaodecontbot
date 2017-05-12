@@ -4,6 +4,7 @@ const FACEBOOK_ACCESS_TOKEN = 'EAARnZCjoA6J4BAJu4dabKK2M2ZBh1YJGAMRkSCfd9JLDZBtK
 const request = require('request')
 const messageHook = require('./messageHook')
 const messageGeneric = require('./messageGeneric')
+const messageProduto = require('./messageProdutos')
 
 
 module.exports = (req, res) => {
@@ -41,6 +42,8 @@ module.exports = (req, res) => {
                     if (event.postback.payload === 'evento_comecar')
                     //sendMessage(event.sender.id,msg);
                         messageGeneric(event, FACEBOOK_ACCESS_TOKEN)
+                    else if (event.postback.payload === 'evento_produtos')
+                        messageProduto(event, FACEBOOK_ACCESS_TOKEN)
                 }
             })
         })
