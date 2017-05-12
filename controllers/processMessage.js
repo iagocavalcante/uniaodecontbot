@@ -46,6 +46,9 @@ module.exports = (req, res) => {
                         case 'evento_produtos':
                             messageProduto(event, FACEBOOK_ACCESS_TOKEN)
                             break;
+                        case 'evento_contato':
+                            messageHook(event, FACEBOOK_ACCESS_TOKEN, "Para marcar um jogo, mande um whatsapp para 981715232")
+                            break;
                         default:
                             messageHook(event, FACEBOOK_ACCESS_TOKEN, "Bot diz:" + text.substring(0, 200))
                     }
