@@ -42,10 +42,10 @@ module.exports = (req, res) => {
                     switch (event.postback.payload) {
                         case 'evento_comecar':
                             messageGeneric(event, FACEBOOK_ACCESS_TOKEN)
-                            break
+                            break;
                         case 'evento_produtos':
                             messageProduto(event, FACEBOOK_ACCESS_TOKEN)
-                            break
+                            break;
                         default:
                             messageHook(event, FACEBOOK_ACCESS_TOKEN, "Bot diz:" + text.substring(0, 200))
                     }
