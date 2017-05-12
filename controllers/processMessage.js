@@ -49,7 +49,6 @@ module.exports = (req, res) => {
                         default:
                             messageHook(event, FACEBOOK_ACCESS_TOKEN, "Bot diz:" + text.substring(0, 200))
                     }
-
                 }
             })
         })
