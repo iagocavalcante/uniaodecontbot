@@ -38,10 +38,18 @@ module.exports = (req, res) => {
 
                 if (event.postback) {
                     console.log(event.postback);
-                    if (event.postback.payload === 'evento_comecar')
-                        messageGeneric(event, FACEBOOK_ACCESS_TOKEN)
-                    else if (event.postback.payload === 'evento_produtos')
-                        messageProduto(event, FACEBOOK_ACCESS_TOKEN)
+                    text = JSON.stringify(event.postback)
+                    switch (event.postback.payload) {
+                        case 'evento_comecar':
+                            messageGeneric(event, FACEBOOK_ACCESS_TOKEN)
+                            break
+                        case 'evento_produtos':
+                            messageProduto(event, FACEBOOK_ACCESS_TOKEN)
+                            break
+                        default:
+                            messageHook(event, FACEBOOK_ACCESS_TOKEN, "Bot diz:" + text.substring(0, 200))
+                    }
+
                 }
             })
         })
