@@ -38,9 +38,7 @@ module.exports = (req, res) => {
 
                 if (event.postback) {
                     console.log(event.postback);
-                    text = JSON.stringify(event.postback)
                     if (event.postback.payload === 'evento_comecar')
-                    //sendMessage(event.sender.id,msg);
                         messageGeneric(event, FACEBOOK_ACCESS_TOKEN)
                     else if (event.postback.payload === 'evento_produtos')
                         messageProduto(event, FACEBOOK_ACCESS_TOKEN)
