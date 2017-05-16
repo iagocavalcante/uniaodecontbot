@@ -1,0 +1,56 @@
+curl -X POST -H "Content-Type: application/json" -d '{
+  "greeting":[
+    {
+      "locale":"default",
+      "text":"Olá {{user_first_name}}, bem-vindo ao chatbot do União Decont, clique em começar para iniciar nossa conversa!"
+    }
+  ] 
+}'  "https://graph.facebook.com/v2.6/me/messenger_profile?access_token=EAARnZCjoA6J4BAJu4dabKK2M2ZBh1YJGAMRkSCfd9JLDZBtKa5CbmDzdjmRACm4m71VqJAzmyIn8fJZA3LeGCfON3asigZCvBJqql8OtDy6e6rmqLgMe8ENEMGIXC0HAyjwbZBrx581Om5d3R7queNCSdQxYti5lWM5Epyz4AugQZDZD"
+
+
+curl -X POST -H "Content-Type: application/json" -d '{ 
+  "get_started":{
+    "payload":"evento_comecar"
+  }
+}' "https://graph.facebook.com/v2.6/me/messenger_profile?access_token=EAARnZCjoA6J4BAJu4dabKK2M2ZBh1YJGAMRkSCfd9JLDZBtKa5CbmDzdjmRACm4m71VqJAzmyIn8fJZA3LeGCfON3asigZCvBJqql8OtDy6e6rmqLgMe8ENEMGIXC0HAyjwbZBrx581Om5d3R7queNCSdQxYti5lWM5Epyz4AugQZDZD"
+
+
+curl -X DELETE -H "Content-Type: application/json" -d '{
+  "fields":[
+    "get_started"
+  ]
+}' "https://graph.facebook.com/v2.6/me/messenger_profile?access_token=EAARnZCjoA6J4BAJu4dabKK2M2ZBh1YJGAMRkSCfd9JLDZBtKa5CbmDzdjmRACm4m71VqJAzmyIn8fJZA3LeGCfON3asigZCvBJqql8OtDy6e6rmqLgMe8ENEMGIXC0HAyjwbZBrx581Om5d3R7queNCSdQxYti5lWM5Epyz4AugQZDZD"    
+
+curl -X DELETE -H "Content-Type: application/json" -d '{
+  "fields":[
+    "greeting"
+  ]
+}' "https://graph.facebook.com/v2.6/me/messenger_profile?access_token=EAARnZCjoA6J4BAJu4dabKK2M2ZBh1YJGAMRkSCfd9JLDZBtKa5CbmDzdjmRACm4m71VqJAzmyIn8fJZA3LeGCfON3asigZCvBJqql8OtDy6e6rmqLgMe8ENEMGIXC0HAyjwbZBrx581Om5d3R7queNCSdQxYti5lWM5Epyz4AugQZDZD"    
+
+curl -X POST -H "Content-Type: application/json" -d '{
+  "persistent_menu":[
+    {
+      "locale":"default",
+      "composer_input_disabled":true,
+      "call_to_actions":[
+        {
+          "title":"União Bot",
+          "type":"nested",
+          "call_to_actions":[
+            {
+              "title":"Começar",
+              "type":"postback",
+              "payload":"evento_comecar"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}' "https://graph.facebook.com/v2.6/me/messenger_profile?access_token=EAARnZCjoA6J4BAJu4dabKK2M2ZBh1YJGAMRkSCfd9JLDZBtKa5CbmDzdjmRACm4m71VqJAzmyIn8fJZA3LeGCfON3asigZCvBJqql8OtDy6e6rmqLgMe8ENEMGIXC0HAyjwbZBrx581Om5d3R7queNCSdQxYti5lWM5Epyz4AugQZDZD"
+
+curl -X DELETE -H "Content-Type: application/json" -d '{
+  "fields":[
+    "persistent_menu"
+  ]
+}' "https://graph.facebook.com/v2.6/me/messenger_profile?access_token=EAARnZCjoA6J4BAJu4dabKK2M2ZBh1YJGAMRkSCfd9JLDZBtKa5CbmDzdjmRACm4m71VqJAzmyIn8fJZA3LeGCfON3asigZCvBJqql8OtDy6e6rmqLgMe8ENEMGIXC0HAyjwbZBrx581Om5d3R7queNCSdQxYti5lWM5Epyz4AugQZDZD"    
