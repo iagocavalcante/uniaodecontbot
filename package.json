@@ -1,18 +1,26 @@
 {
-    "name": "bot",
+    "name": "uniaodecontbot",
     "version": "1.0.0",
-    "description": "",
+    "description": "Facebook Messenger bot for União de Contabilidade",
     "main": "index.js",
     "scripts": {
+        "start": "node index.js",
+        "dev": "nodemon index.js",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
-    "author": "",
-    "license": "ISC",
+    "author": "Iago Cavalcante",
+    "license": "MIT",
     "dependencies": {
-        "body-parser": "^1.17.1",
-        "express": "^4.15.2",
-        "request": "^2.81.0",
-        "mongodb": "^3.0.0",
-        "mongoose": "^5.0.0"
+        "body-parser": "^2.2.0",
+        "express": "^5.1.0",
+        "axios": "^1.7.7",
+        "mongodb": "^6.20.0",
+        "mongoose": "^8.18.2"
+    },
+    "devDependencies": {
+        "nodemon": "^3.1.7"
+    },
+    "engines": {
+        "node": ">=18.0.0"
     }
 }

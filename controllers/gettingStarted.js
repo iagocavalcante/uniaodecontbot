@@ -1,154 +1,161 @@
 'use strict'
 
-const request = require('request')
-const FACEBOOK_ACCESS_TOKEN = 'EAARnZCjoA6J4BAJu4dabKK2M2ZBh1YJGAMRkSCfd9JLDZBtKa5CbmDzdjmRACm4m71VqJAzmyIn8fJZA3LeGCfON3asigZCvBJqql8OtDy6e6rmqLgMe8ENEMGIXC0HAyjwbZBrx581Om5d3R7queNCSdQxYti5lWM5Epyz4AugQZDZD';
+const { curry, pipe, tryCatch, Either } = require('../utils/functional')
+const { updateFacebookProfile } = require('../utils/httpClient')
 
-function register(req, res) {
-    let messageData = {
-        "get_started": [{
-            "payload": "USER_DEFINED_PAYLOAD"
-        }]
+// Pure functions for creating profile configurations
+const createGetStartedConfig = (payload = "getstarted") => ({
+    get_started: { payload }
+})
+
+const createRegisterConfig = (payload = "USER_DEFINED_PAYLOAD") => ({
+    get_started: [{ payload }]
+})
+
+const createGreetingConfig = () => ({
+    greeting: [
+        {
+            locale: "default",
+            text: "Bem-vindo à União de Contabilidade! Como posso ajudá-lo hoje?"
+        },
+        {
+            locale: "en_US", 
+            text: "Welcome to União de Contabilidade! How can I help you today?"
+        }
+    ]
+})
+
+const createPersistentMenuConfig = () => ({
+    persistent_menu: [
+        {
+            locale: "default",
+            composer_input_disabled: true,
+            call_to_actions: [
+                {
+                    title: "Informações",
+                    type: "nested",
+                    call_to_actions: [
+                        {
+                            title: "Ajuda",
+                            type: "postback",
+                            payload: "HELP_PAYLOAD"
+                        },
+                        {
+                            title: "Contato",
+                            type: "postback",
+                            payload: "CONTACT_INFO_PAYLOAD"
+                        }
+                    ]
+                },
+                {
+                    type: "web_url",
+                    title: "Visite nosso site",
+                    url: "https://uniaodecontabilidade.com.br",
+                    webview_height_ratio: "full"
+                }
+            ]
+        },
+        {
+            locale: "en_US",
+            composer_input_disabled: false
+        }
+    ]
+})
+
+// Higher-order function to create response handlers
+const createResponseHandler = curry((operation, res) => (result) => {
+    return Either.fold(
+        (error) => {
+            console.error(`Error in ${operation}:`, error)
+            res.status(500).send({ 
+                error: `Failed to ${operation}`,
+                details: error.message 
+            })
+        },
+        (data) => {
+            console.log(`${operation} successful`)
+            res.send(data)
+        }
+    )(result)
+})
+
+// Safe profile update function
+const safeUpdateProfile = tryCatch(updateFacebookProfile)
+
+// Higher-order function to create setup functions
+const createSetupFunction = curry((configCreator, operation) => async (req, res) => {
+    const config = configCreator()
+    const result = await safeUpdateProfile(config)
+    const handleResponse = createResponseHandler(operation, res)
+    return handleResponse(result)
+})
+
+// Composed setup functions
+const setupGetStartedButton = createSetupFunction(
+    createGetStartedConfig,
+    'setup get started button'
+)
+
+const register = createSetupFunction(
+    createRegisterConfig,
+    'register'
+)
+
+const setupGreetingText = createSetupFunction(
+    createGreetingConfig,
+    'setup greeting text'
+)
+
+const setupPersistentMenu = createSetupFunction(
+    createPersistentMenuConfig,
+    'setup persistent menu'
+)
+
+// Utility function to run all setup functions in sequence
+const runAllSetups = async (req, res) => {
+    const setupFunctions = [
+        () => register(req, { send: () => {}, status: () => ({ send: () => {} }) }),
+        () => setupGetStartedButton(req, { send: () => {}, status: () => ({ send: () => {} }) }),
+        () => setupGreetingText(req, { send: () => {}, status: () => ({ send: () => {} }) }),
+        () => setupPersistentMenu(req, { send: () => {}, status: () => ({ send: () => {} }) })
+    ]
+
+    const results = []
+    for (const setupFn of setupFunctions) {
+        try {
+            const result = await setupFn()
+            results.push({ success: true, result })
+        } catch (error) {
+            results.push({ success: false, error: error.message })
+        }
     }
 
-    // Start the request
-    request({
-            url: 'https://graph.facebook.com/v2.6/me/messenger_profile',
-            qs: { access_token: FACEBOOK_ACCESS_TOKEN },
-            method: 'POST',
-            json: {
-                message: messageData
-            }
-        },
-        (error, response, body) => {
-            if (!error && response.statusCode == 200) {
-                // Print out the response body
-                res.send(body);
+    const successCount = results.filter(r => r.success).length
+    const errorCount = results.length - successCount
 
-            } else {
-                // TODO: Handle errors
-                res.send(body);
-            }
+    if (errorCount === 0) {
+        res.send({ 
+            message: 'All setup operations completed successfully',
+            results 
         })
-}
-
-function setupGreetingText(req, res) {
-    let messageData = {
-        "greeting": [{
-            "locale": "default",
-            "text": "Greeting text for default local !"
-        }, {
-            "locale": "en_US",
-            "text": "Greeting text for en_US local !"
-        }]
-    };
-    request({
-            url: 'https://graph.facebook.com/v2.6/me/messenger_profile',
-            qs: { access_token: FACEBOOK_ACCESS_TOKEN },
-            method: 'POST',
-            json: {
-                message: messageData
-            }
-        },
-        (error, response, body) => {
-            if (!error && response.statusCode == 200) {
-                // Print out the response body
-                res.send(body);
-
-            } else {
-                // TODO: Handle errors
-                res.send(body);
-            }
-        });
-
-}
-
-function setupPersistentMenu(req, res) {
-    let messageData = {
-        "persistent_menu": [{
-                "locale": "default",
-                "composer_input_disabled": true,
-                "call_to_actions": [{
-                        "title": "Info",
-                        "type": "nested",
-                        "call_to_actions": [{
-                                "title": "Help",
-                                "type": "postback",
-                                "payload": "HELP_PAYLOAD"
-                            },
-                            {
-                                "title": "Contact Me",
-                                "type": "postback",
-                                "payload": "CONTACT_INFO_PAYLOAD"
-                            }
-                        ]
-                    },
-                    {
-                        "type": "web_url",
-                        "title": "Visit website ",
-                        "url": "http://www.techiediaries.com",
-                        "webview_height_ratio": "full"
-                    }
-                ]
-            },
-            {
-                "locale": "zh_CN",
-                "composer_input_disabled": false
-            }
-        ]
-    };
-    // Start the request
-    request({
-            url: 'https://graph.facebook.com/v2.6/me/messenger_profile',
-            qs: { access_token: FACEBOOK_ACCESS_TOKEN },
-            method: 'POST',
-            json: {
-                message: messageData
-            }
-        },
-        function(error, response, body) {
-            if (!error && response.statusCode == 200) {
-                // Print out the response body
-                res.send(body);
-
-            } else {
-                // TODO: Handle errors
-                res.send(body);
-            }
-        });
-
-}
-
-
-function setupGetStartedButton(req, res) {
-    let messageData = {
-        "get_started": {
-            "payload": "getstarted"
-        }
-    };
-    // Start the request
-    request({
-            url: 'https://graph.facebook.com/v2.6/me/messenger_profile',
-            qs: { access_token: FACEBOOK_ACCESS_TOKEN },
-            method: 'POST',
-            json: {
-                message: messageData
-            }
-        },
-        (error, response, body) => {
-            if (!error && response.statusCode == 200) {
-                // Print out the response body
-                res.send(body);
-
-            } else {
-                // TODO: Handle errors
-                res.send(body);
-            }
-        });
+    } else {
+        res.status(207).send({ 
+            message: `${successCount} operations succeeded, ${errorCount} failed`,
+            results 
+        })
+    }
 }
 
 module.exports = {
-    setupGetStartedButton: setupGetStartedButton,
-    register: register,
-    setupGreetingText: setupGreetingText,
-    setupPersistentMenu: setupPersistentMenu
+    setupGetStartedButton,
+    register,
+    setupGreetingText,
+    setupPersistentMenu,
+    runAllSetups,
+    
+    // Export pure functions for testing
+    createGetStartedConfig,
+    createRegisterConfig,
+    createGreetingConfig,
+    createPersistentMenuConfig
 }

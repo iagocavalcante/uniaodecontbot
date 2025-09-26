@@ -1,61 +1,79 @@
-const FACEBOOK_ACCESS_TOKEN = 'EAARnZCjoA6J4BAJu4dabKK2M2ZBh1YJGAMRkSCfd9JLDZBtKa5CbmDzdjmRACm4m71VqJAzmyIn8fJZA3LeGCfON3asigZCvBJqql8OtDy6e6rmqLgMe8ENEMGIXC0HAyjwbZBrx581Om5d3R7queNCSdQxYti5lWM5Epyz4AugQZDZD';
+const { pipe, prop, asyncMap, forEach, Either, tryCatch, log } = require('../utils/functional')
+const { processEvent } = require('../handlers/messageHandlers')
 
+// Pure functions for request validation and data extraction
+const isPageWebhook = pipe(
+    prop('body'),
+    prop('object'),
+    (obj) => obj === 'page'
+)
 
-const request = require('request')
-const messageHook = require('./messageHook')
-const messageGeneric = require('./messageGeneric')
-const messageProduto = require('./messageProdutos')
+const extractEntries = pipe(
+    prop('body'),
+    prop('entry')
+)
 
+const extractMessagingEvents = pipe(
+    prop('messaging')
+)
 
-module.exports = (req, res) => {
-    if (req.body.object === 'page') {
-        req.body.entry.forEach(entry => {
-            entry.messaging.forEach(event => {
-                if (event.message && event.message.text) {
-                    text = event.message.text
-                    if (text === 'oi') {
-                        messageGeneric(event, FACEBOOK_ACCESS_TOKEN)
-                    } else if (text === 'contato') {
-                        messageHook(event, FACEBOOK_ACCESS_TOKEN, "Para marcar um jogo, mande um whatsapp para 981715232")
-                    } else if (text === 'patrick') {
-                        messageHook(event, FACEBOOK_ACCESS_TOKEN, "Patrick é gayzao")
-                    } else if (text === 'karla') {
-                        messageHook(event, FACEBOOK_ACCESS_TOKEN, "Karla é meu amor <3")
-                    } else if (text === 'gustavo') {
-                        messageHook(event, FACEBOOK_ACCESS_TOKEN, "Melhor goleiro de belém!")
-                    } else if (text === 'bulão') {
-                        messageHook(event, FACEBOOK_ACCESS_TOKEN, "Craque, joga 10!")
-                    } else if (text === 'Ronnes') {
-                        messageHook(event, FACEBOOK_ACCESS_TOKEN, "Entre na página https://www.facebook.com/reativafisioterapiaespecializada/")
-                    } else if (text === 'Hermmann' || text === 'hermmann') {
-                        messageHook(event, FACEBOOK_ACCESS_TOKEN, "Meu bb lindo")
-                    } else if (text === 'remo' || text === 'Remo') {
-                        messageHook(event, FACEBOOK_ACCESS_TOKEN, "Remo é minha vida, o remo é minha história!")
-                    } else {
-                        messageHook(event, FACEBOOK_ACCESS_TOKEN, "Bot diz:" + text.substring(0, 200))
-                    }
-                }
+const flattenEvents = (entries) => 
+    entries.flatMap(extractMessagingEvents)
 
-                if (event.postback) {
-                    console.log(event.postback);
-                    text = JSON.stringify(event.postback)
-                    switch (event.postback.payload) {
-                        case 'evento_comecar':
-                            messageGeneric(event, FACEBOOK_ACCESS_TOKEN)
-                            break;
-                        case 'evento_produtos':
-                            messageProduto(event, FACEBOOK_ACCESS_TOKEN)
-                            break;
-                        case 'evento_contato':
-                            messageHook(event, FACEBOOK_ACCESS_TOKEN, "Para marcar um jogo, mande um whatsapp para 981715232")
-                            break;
-                        default:
-                            messageHook(event, FACEBOOK_ACCESS_TOKEN, "Bot diz:" + text.substring(0, 200))
-                    }
-                }
-            })
-        })
-
-        res.status(200).end()
-    }
+// Pure function to process all events
+const processAllEvents = async (events) => {
+    const results = await asyncMap(processEvent, events)
+    return results
 }
+
+// Safe event processor with error handling
+const safeProcessEvent = tryCatch(processEvent, (error) => {
+    console.error('Error processing event:', error)
+    return error
+})
+
+// Higher-order function to create response handler
+const createResponseHandler = (res) => (results) => {
+    // Log successful processing
+    const successCount = results.filter(Either.fold(() => false, () => true)).length
+    const errorCount = results.length - successCount
+    
+    if (errorCount > 0) {
+        console.log(`Processed ${successCount} events successfully, ${errorCount} with errors`)
+    } else {
+        console.log(`Successfully processed ${successCount} events`)
+    }
+    
+    res.status(200).end()
+    return results
+}
+
+// Functional pipeline for processing webhook requests
+const processWebhookRequest = async (req, res) => {
+    if (!isPageWebhook(req)) {
+        res.status(400).json({ error: 'Invalid webhook object type' })
+        return
+    }
+
+    const pipeline = pipe(
+        extractEntries,
+        flattenEvents,
+        async (events) => {
+            const results = await Promise.all(
+                events.map(safeProcessEvent)
+            )
+            return results
+        },
+        createResponseHandler(res)
+    )
+
+    return await pipeline(req)
+}
+
+// Main export with error handling
+module.exports = tryCatch(processWebhookRequest, (error) => {
+    console.error('Webhook processing error:', error)
+    return (req, res) => {
+        res.status(500).json({ error: 'Internal server error' })
+    }
+})
